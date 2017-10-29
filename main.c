@@ -179,11 +179,21 @@ void doTests(int sortType)
             default:
                 return;
         }
-        for(int j = 2; j <= 9; j++) {
-            printf("Array of %d numbers... ", j);
-            sortTest(i, j*100000, sortType);
 
+        for(int j = 10; j <= 1000000; j *= 10)
+        {
+            printf("Array of %d numbers... ", j);
+            sortTest(i, j, sortType);
+            if(j == 100000) {
+                for (int k = j*2; k <= 900000; k += j) {
+
+                    printf("Array of %d numbers... ", k);
+                    sortTest(i, k, sortType);
+
+                }
+            }
         }
+
     }
 }
 
