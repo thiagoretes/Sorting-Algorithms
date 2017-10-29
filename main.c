@@ -9,8 +9,7 @@
  * respectively for random ordered arrays, ascending ordered arrays and descending ordered arrays
  */
 
-enum sortTypes
-{
+enum sortTypes {
     BUBBLE,
     SELECTION,
     INSERTION,
@@ -18,11 +17,9 @@ enum sortTypes
     MERGE
 };
 
-int* getArray(int type, int amount)
-{
+int *getArray(int type, int amount) {
     char str[25];
-    switch(type)
-    {
+    switch (type) {
         case 1:
             sprintf(str, "random_int/%d.txt", amount);
             break;
@@ -38,11 +35,10 @@ int* getArray(int type, int amount)
 
     }
     printf("CARALHO %s", str);
-    FILE* fp = fopen(str,"r");
-    int* array = malloc(amount*sizeof(int));
+    FILE *fp = fopen(str, "r");
+    int *array = malloc(amount * sizeof(int));
     int i = 0;
-    while(!feof(fp) && i < amount)
-    {
+    while (!feof(fp) && i < amount) {
         fscanf(fp, "%d", &array[i]);
         i++;
     }
@@ -53,36 +49,33 @@ int* getArray(int type, int amount)
 long long timeInMilliseconds(void) {
     struct timeval tv;
 
-    gettimeofday(&tv,NULL);
-    return (((long long)tv.tv_sec)*1000)+(tv.tv_usec/1000);
+    gettimeofday(&tv, NULL);
+    return (((long long) tv.tv_sec) * 1000) + (tv.tv_usec / 1000);
 }
 
-void saveArray(char* str, int* array, int size)
-{
+void saveArray(char *str, int *array, int size) {
     FILE *fp = fopen(str, "w");
-    for(int i = 0; i < size; i++)
-    {
+    for (int i = 0; i < size; i++) {
         fprintf(fp, "%d ", array[i]);
     }
     fclose(fp);
 }
 
-void saveInfo(char* str, long int clocks, long long time, unsigned long long int compare, unsigned long long int change)
-{
+void
+saveInfo(char *str, long int clocks, long long time, unsigned long long int compare, unsigned long long int change) {
     FILE *fp = fopen(str, "w");
-    fprintf(fp, "Comparações: %llu.\nTrocas:%llu.\nCycles of clock spent: %lu.\nTime spent: %llu ms.\n", compare, change, clocks, time);
+    fprintf(fp, "Comparações: %llu.\nTrocas:%llu.\nCycles of clock spent: %lu.\nTime spent: %llu ms.\n", compare,
+            change, clocks, time);
     fclose(fp);
 }
 
-int* mergeSort_packed(int *array, unsigned long long int *compare, unsigned long long int *change, int size)
-{
-    mergeSort(array, 0, size-1, compare, change);
+int *mergeSort_packed(int *array, unsigned long long int *compare, unsigned long long int *change, int size) {
+    mergeSort(array, 0, size - 1, compare, change);
     return array;
 }
 
-void sortTest(int type, int amount, int sortType)
-{
-    int* array;
+void sortTest(int type, int amount, int sortType) {
+    int *array;
     unsigned long long int compare = 0;
     unsigned long long int change = 0;
     long int start_clock;
@@ -91,33 +84,32 @@ void sortTest(int type, int amount, int sortType)
     long long end_time;
     char str[100];
     char str2[100];
-    int* (*sort)(int *array2, unsigned long long int *compare2, unsigned long long int *change2, int size);
-    switch(sortType)
-    {
+    int *(*sort)(int *array2, unsigned long long int *compare2, unsigned long long int *change2, int size);
+    switch (sortType) {
         case BUBBLE:
             sort = &bubbleSort;
-            strcpy(str,"bubbleSort/");
-            strcpy(str2,str);
+            strcpy(str, "bubbleSort/");
+            strcpy(str2, str);
             break;
         case SELECTION:
             sort = &selectionSort;
-            strcpy(str,"selectionSort/");
-            strcpy(str2,str);
+            strcpy(str, "selectionSort/");
+            strcpy(str2, str);
             break;
         case INSERTION:
             sort = &insertionSort;
-            strcpy(str,"insertionSort/");
-            strcpy(str2,str);
+            strcpy(str, "insertionSort/");
+            strcpy(str2, str);
             break;
         case QUICK:
             sort = &quickSort;
-            strcpy(str,"quickSort/");
-            strcpy(str2,str);
+            strcpy(str, "quickSort/");
+            strcpy(str2, str);
             break;
         case MERGE:
             sort = &mergeSort_packed;
-            strcpy(str,"mergeSort/");
-            strcpy(str2,str);
+            strcpy(str, "mergeSort/");
+            strcpy(str2, str);
             break;
         default:
             printf("Problem: SORT TYPE NOT IDENTIFIED!\n");
@@ -132,10 +124,9 @@ void sortTest(int type, int amount, int sortType)
     end_time = timeInMilliseconds();
 
 
-    switch(type)
-    {
+    switch (type) {
         case 1:
-            sprintf(str, "%s%d_random", str2,amount);
+            sprintf(str, "%s%d_random", str2, amount);
             break;
         case 2:
             sprintf(str, "%s%d_ascending", str2, amount);
@@ -152,21 +143,17 @@ void sortTest(int type, int amount, int sortType)
     sprintf(str, "%s.txt", str);
 
     saveArray(str, array, amount);
-    saveInfo(str2, end_clock-start_clock, end_time-start_time, compare, change);
+    saveInfo(str2, end_clock - start_clock, end_time - start_time, compare, change);
     free(array);
     printf("Done!\n");
-
 
 
 }
 
 
-void doTests(int sortType)
-{
-    for(int i = 1; i < 4; i++)
-    {
-        switch(i)
-        {
+void doTests(int sortType) {
+    for (int i = 1; i < 4; i++) {
+        switch (i) {
             case 1:
                 printf("Random ordered:\n");
                 break;
@@ -180,12 +167,11 @@ void doTests(int sortType)
                 return;
         }
 
-        for(int j = 10; j <= 1000000; j *= 10)
-        {
+        for (int j = 10; j <= 1000000; j *= 10) {
             printf("Array of %d numbers... ", j);
             sortTest(i, j, sortType);
-            if(j == 100000) {
-                for (int k = j*2; k <= 900000; k += j) {
+            if (j == 100000) {
+                for (int k = j * 2; k <= 900000; k += j) {
 
                     printf("Array of %d numbers... ", k);
                     sortTest(i, k, sortType);
@@ -196,7 +182,6 @@ void doTests(int sortType)
 
     }
 }
-
 
 
 int main() {
